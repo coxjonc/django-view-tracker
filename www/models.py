@@ -17,15 +17,17 @@ class Byline(models.Model):
         return self.name
 
 class Article(models.Model): 
-    byline = models.ForeignKey(Byline, related_name='articles', null=True)
+    bylines = models.ManyToManyField(Byline, related_name='articles')
     boring = models.BooleanField()
     url = models.URLField(max_length=300, unique=True)
     title = models.CharField(max_length=250, null=True)
     views = models.IntegerField(null=True) 
     last_updated = models.DateTimeField(auto_now=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
 
     class Meta:
         ordering = ['-views']
+        get_latest_by = 'last_updated'
 
     def boring(self):
         return self.last_updated <= timezone.now() - datetime.timedelta(days=7)

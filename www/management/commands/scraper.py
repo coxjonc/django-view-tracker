@@ -16,8 +16,9 @@ class Command(BaseCommand):
     Articles older than a certain range are skipped.
     """
     def handle(self, *args, **options):
+                    
         update_articles_list()
-        update_article_views()
+        update_article_viewbylins()
         update_counts()
 
 def get_all_article_urls():
@@ -50,11 +51,11 @@ def update_article_views():
         if a.views == parsed_article.views and a.boring(): 
             a.boring = True
         else:
-            print parsed_article.title
             a.title = parsed_article.title
             a.views = parsed_article.views
-            byline = Byline.objects.get_or_create(name=parsed_article.byline)
-            a.byline = byline[0]
+            for name in parsed_article.bylines:
+                byline = Byline.objects.get_or_create(name=name)
+                a.bylines.add(byline[0])
             a.save()
 
 def update_articles_list():

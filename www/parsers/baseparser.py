@@ -11,7 +11,6 @@ def grab_url(url, max_depth=5):
     try: 
         text = requests.get(url, timeout=5, allow_redirects=False)
     except socket.timeout:
-        print "TIMEOUT"
         retry = True
     if retry:
         if max_depth == 0:
@@ -30,10 +29,11 @@ def concat(domain, url):
 class BaseParser(object):
     url = None
     domains = [] # List of domains this should parse
+    reporters = []
 
     # These should be filled in by self._parse(html)
     title = None
-    byline = None
+    bylines = []
     views = None
 
     real_article = True # If set to False, ignore this article
