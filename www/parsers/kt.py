@@ -55,6 +55,7 @@ class KTParser(BaseParser):
         try: 
             self.title = soup.find('h1', 
                 attrs={'class':'title'}).get_text()
+            logger.debug('Title: {}'.format(self.title.encode('ascii', 'ignore')))
         except:
             logger.debug('Parser couldn\'t find title')
             self.real_article = False

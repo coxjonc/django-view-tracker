@@ -4,14 +4,7 @@
     <title>Three Digit</title>
 </head>
 <body>
-<h1>Three Digit</h1>
-<h3>Each <em>Khmer Times</em> reporter or contributor's total pageviews since 08-02-2016</h3>
-<h3><a href="https://github.com/geezhawk/django-view-tracker">[View source on Github]</a></h3>
-    {% for byline in bylines %}
-    <p>{{byline.name}}: <strong>{{byline.view_count}}</strong></p>
-    {% endfor %}
-    <br>
-    <p><em><strong>NOTE:</strong></em> The scraper runs once daily at 7am.
-    </p>
+<div id="container"></div>
+{{rendered|safe}}
 </body>
 </html>
