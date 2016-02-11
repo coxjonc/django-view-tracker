@@ -1,1 +1,0 @@
-{"status":"error","error":"ModuleParseError","message":"Module parse failed: /home/geezhawk/dev/three_digit/node_modules/babel-loader/index.js?{\"presets\":[\"react\"]}!/home/geezhawk/dev/three_digit/assets/js/index.js Line 14: Unexpected token\nYou may need an appropriate loader to handle this file type.\n| }\n| \n| export default Hello;"}
