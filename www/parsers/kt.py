@@ -70,7 +70,7 @@ class KTParser(BaseParser):
             logger.debug('Parser couldn\'t find views')
             self.real_article = False
             return
-        # Get byline
+        # Get bylines
         try: 
             full_byline = soup.find('div', 
                 attrs={'class':'journalist'}).get_text()

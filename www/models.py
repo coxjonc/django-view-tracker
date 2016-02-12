@@ -29,7 +29,7 @@ class Article(models.Model):
         ordering = ['-views']
         get_latest_by = 'last_updated'
 
-    def boring(self):
+    def outdated(self, views):
         return self.last_updated <= timezone.now() - datetime.timedelta(days=7)
 
     def __unicode__(self):

@@ -8,17 +8,18 @@ from www.models import Article, Byline
 
 
 class Command(BaseCommand):
-    help = """Scrape websites.
+    help = """Scrape Khmer Times.
 
-    By default, scan front pages for new articles, and scan existing articles
+    By default, scan the front page for new articles, and scan existing articles
     to record changes in the view count.
 
-    Articles older than a certain range are skipped.
+    Articles whose views haven't changed since the last scrape, 
+    and which are more than one week old, are skipped.
     """
     def handle(self, *args, **options):
                     
         update_articles_list()
-        update_article_viewbylins()
+        update_article_views()
         update_counts()
 
 def get_all_article_urls():
@@ -48,15 +49,17 @@ def update_article_views():
             a = Article.objects.get(url=parsed_article.url)
         except:
             continue
-        if a.views == parsed_article.views and a.boring(): 
+        if a.views == parsed_article.views and a.outdated(): 
             a.boring = True
         else:
             a.title = parsed_article.title
             a.views = parsed_article.views
             for name in parsed_article.bylines:
                 byline = Byline.objects.get_or_create(name=name)
+                byline.articles.add(a)
                 a.bylines.add(byline[0])
             a.save()
+
 
 def update_articles_list():
     all_urls = get_all_article_urls()

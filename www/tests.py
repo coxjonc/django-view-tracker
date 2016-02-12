@@ -28,3 +28,7 @@ class ParserTestCase(TestCase):
         if not parsed_article.real_article:
             return
         return parsed_article
+
+class BoringTest(TestCase):
+    def test_boring(self):
+        boring_article = Article(title='test', #some time in the past)
