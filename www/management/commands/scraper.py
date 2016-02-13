@@ -6,16 +6,6 @@ from django.utils import timezone
 
 from www.parsers import kt
 from www.models import Article, Byline
-
-# Begin logging settings
-logger = logging.getLogger()
-handler = logging.StreamHandler()
-formatter = logging.Formatter(
-        '%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)
-# End logging settings
         
 class Command(BaseCommand):
     help = """Scrape Khmer Times.
@@ -27,10 +17,7 @@ class Command(BaseCommand):
     and which are more than one week old, are skipped.
     """
     def handle(self, *args, **options):
-                    
-        update_articles_list()
         update_article_views()
-        update_counts()
 
 def get_all_article_urls():
     ans = set()
@@ -42,26 +29,18 @@ def load_article(url):
     try:
         parser = kt.KTParser
     except KeyError:
-    	logger.debug('No parser with that name')
         return
     parsed_article = parser(url)
     if not parsed_article.real_article:
-    	logger.debug('Not a real article')
         return
     return parsed_article
 
 def update_article_views():
-    for article in Article.objects.all():
-        if article.boring == True:
-        	logger.debug('Boring')
-        	continue
-        parsed_article = load_article(article.url)
+    for url in get_all_article_urls():
+        parsed_article = load_article(url)        
         if parsed_article is None:
             continue
-        try:
-            a = Article.objects.get(url=parsed_article.url)
-        except:
-            continue
+        a = Article.objects.get_or_create(url=parsed_article.url)[0]
         if a.views == parsed_article.views and a.outdated(): 
             a.boring = True
         else:
@@ -70,17 +49,5 @@ def update_article_views():
             a.pub_date = parsed_article.pub_date
             for name in parsed_article.bylines:
                 byline = Byline.objects.get_or_create(name=name)
-                byline[0].articles.add(a)
                 a.bylines.add(byline[0])
             a.save()
-
-
-def update_articles_list():
-    all_urls = get_all_article_urls()
-    for url in all_urls:
-        Article.objects.get_or_create(url=url)
-
-def update_counts():
-    for byline in Byline.objects.all():
-        byline.get_view_count()
-        byline.save()

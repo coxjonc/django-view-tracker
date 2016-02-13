@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Three Digit</title>
+</head>
+<body>
+{% for k, v in bylines.items() %}
+    <h2>{{k}}</h2>
+    <ul>
+    {% for k2, v2 in v %}
+        <li><strong>{{k2}}</strong> -- {{v2}}</li>
+    {% endfor %}
+    </ul>
+{% endfor %}
+</body>
+</html>

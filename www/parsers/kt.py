@@ -104,11 +104,12 @@ class KTParser(BaseParser):
         clean_split = [list(g) for k,g in itertools.groupby(clean,lambda x:x == 'and') if not k]
         # It's possible for a byline to contain both staff and non-staff writers
         reporter_names = [' '.join(x) for x in clean_split if ' '.join(x) in self.reporters]
+        self.bylines = []
         if reporter_names:
             for x in reporter_names:
                 logger.debug('Author: {}'.format(x))
                 self.bylines.append(x)
         else:
             self.real_article = False
-            logger.debug('No name in byline')
+            logger.debug('Byline invalid')
             return

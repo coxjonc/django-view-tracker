@@ -5,7 +5,10 @@ from www.parsers import kt
 
 class ParserTestCase(TestCase):
     def test_parser(self):
-        url = 'http://www.khmertimeskh.com/news/19815/dna-evidence-is-next-frontier-for-cambodia---s-crime-scene-investigators/'
+        url_list = [
+        'http://www.khmertimeskh.com/news/21337/le-cambodge-est-une---conomie-modeste-mais-en-rattrapage-extr--mement-rapide/'
+        'http://www.khmertimeskh.com/news/21313/dutchman-tries-to-fly-coop--tears-hole-in-cell---s-ceiling/'
+        ]
         parsed_article = self.load_article(url)
         if parsed_article is not None:
             a = Article.objects.get_or_create(url=parsed_article.url)[0]
@@ -14,10 +17,11 @@ class ParserTestCase(TestCase):
             else:
                 a.title = parsed_article.title
                 a.views = parsed_article.views
+                a.pub_date = parsed_article.pub_date
                 for name in parsed_article.bylines:
                     byline = Byline.objects.get_or_create(name=name)
                     a.bylines.add(byline[0])
-                self.assertEqual(a.bylines.all().count(), 2)
+                    
 
     def load_article(self, url):
         try:

@@ -1,17 +1,14 @@
 import datetime
 
 from django.db import models
+from django.db.models import Max
 from django.utils import timezone
 
 class Byline(models.Model):
-    name = models.CharField(max_length=250, unique=True)
-    view_count = models.IntegerField(default=0)
+    name = models.CharField(max_length=250, unique=True)    
 
-    class Meta:
-        ordering = ['-view_count']
-
-    def get_view_count(self):
-        self.view_count = sum([x.views for x in self.articles.all()])
+    class Meta: 
+        ordering = ['name']
 
     def __unicode__(self):
         return self.name
@@ -33,4 +30,4 @@ class Article(models.Model):
         return self.last_updated <= timezone.now() - datetime.timedelta(days=7)
 
     def __unicode__(self):
-        return self.url
+        return self.title

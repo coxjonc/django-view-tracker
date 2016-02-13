@@ -33,7 +33,7 @@ class BaseParser(object):
 
     # These should be filled in by self._parse(html)
     title = None
-    bylines = []
+    bylines = None
     views = None
     pub_date = None
 
