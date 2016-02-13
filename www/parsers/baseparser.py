@@ -10,7 +10,7 @@ def grab_url(url, max_depth=5):
     retry = False
     try: 
         text = requests.get(url, timeout=5, allow_redirects=False)
-    except socket.timeout:
+    except requests.exceptions.ConnectionError:
         retry = True
     if retry:
         if max_depth == 0:
@@ -35,6 +35,7 @@ class BaseParser(object):
     title = None
     bylines = []
     views = None
+    pub_date = None
 
     real_article = True # If set to False, ignore this article
 

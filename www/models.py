@@ -18,12 +18,12 @@ class Byline(models.Model):
 
 class Article(models.Model): 
     bylines = models.ManyToManyField(Byline, related_name='articles')
-    boring = models.BooleanField()
+    boring = models.BooleanField(default=False)
     url = models.URLField(max_length=300, unique=True)
     title = models.CharField(max_length=250, null=True)
     views = models.IntegerField(null=True) 
     last_updated = models.DateTimeField(auto_now=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    pub_date = models.DateTimeField(auto_now_add=True, null=True)
 
     class Meta:
         ordering = ['-views']

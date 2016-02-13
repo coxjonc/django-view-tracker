@@ -1,13 +1,15 @@
-import html
+
 import re
 import itertools
 import logging
+import datetime
+import calendar
 
 from bs4 import BeautifulSoup
 
 from baseparser import BaseParser 
 
-#begin logging settings
+# Begin logging settings
 logger = logging.getLogger()
 handler = logging.StreamHandler()
 formatter = logging.Formatter(
@@ -15,23 +17,25 @@ formatter = logging.Formatter(
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
-#end logging settings
+# End logging settings
 
 
 class KTParser(BaseParser):
     domains = ['www.khmertimeskh.com']
-    feeder_pat = '^http://www.khmertimeskh.com/news/[^1]\d{4}/[\w]'
+    feeder_pat = '^http://www.khmertimeskh.com/news/[2-9]\d{4}/[\w]'
+    #check if markup is ruined by FB popup
     feeder_pages = ['http://www.khmertimeskh.com']
     reporters = [
         'May Titthara',
+        'Buth Reaksmey Kongkea',
         'Phun Chan Ousaphea'
         'Mom Kunthear',
         'Taing Vida',
         'Vannak Chea'
-        'So Nyka'
+        'So Nyka',
         'Srey Kumneth',
         'Nou Sotheavy',
-        'Sum Manet'
+        'Sum Manet',
         'Va Sonyka',
         'Chea Vannak',
         'Pav Suy',
@@ -46,6 +50,7 @@ class KTParser(BaseParser):
         'Jonathan Greig',
         'Maddy Crowell',
         'Jonathan Cox',
+        'Ismail Vorajee'
     ]
 
     def _parse(self, html):
@@ -56,7 +61,7 @@ class KTParser(BaseParser):
             self.title = soup.find('h1', 
                 attrs={'class':'title'}).get_text()
             logger.debug('Title: {}'.format(self.title.encode('ascii', 'ignore')))
-        except:
+        except AttributeError:
             logger.debug('Parser couldn\'t find title')
             self.real_article = False
             return
@@ -66,28 +71,35 @@ class KTParser(BaseParser):
                 attrs={'class':'view-count'}).get_text()
             self.views = [int(x) for x in views_str.split() if x.isdigit()][0]
             logger.debug('Views: {}'.format(self.views))
-        except:
+        except AttributeError:
             logger.debug('Parser couldn\'t find views')
             self.real_article = False
             return
+        # Get date
+        date_span = soup.find('span', attrs={'id':'date'})
+        ds = re.findall(r'[\w]+', date_span.get_text())
+        date_dict = dict((v,k) for k, v in enumerate(calendar.month_abbr))
+        self.pub_date = datetime.datetime.strptime('{}-{}-{}'.format(ds[3], date_dict[ds[2][:3]], ds[1]),
+                                                           '%Y-%m-%d')
         # Get bylines
         try: 
             full_byline = soup.find('div', 
                 attrs={'class':'journalist'}).get_text()
             # Split byline into a list of words
             clean = re.findall(r'[\w]+', full_byline)
-        except:
+        except AttributeError:
             logger.debug('No journalist class tag in markup')
             self.real_article = False
             return
         # If necessary, cut Khmer Times off front of byline
         if clean[0].lower() == 'khmer':
             try:
-                clean = clean[2:]
-            except:
+                if clean[2].lower=='by':
+                    clean = clean[3:]
+                else:
+                    clean = clean[2:]
+            except IndexError:
                 self.real_article = False
-                logger.debug('Byline is just Khmer Times')
-                return
         # If multiple reporters, split byline into sublists on 'and'
         clean_split = [list(g) for k,g in itertools.groupby(clean,lambda x:x == 'and') if not k]
         # It's possible for a byline to contain both staff and non-staff writers

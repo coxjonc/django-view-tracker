@@ -1,4 +1,5 @@
 import datetime
+import logging
 
 from django.core.management.base import BaseCommand
 from django.utils import timezone
@@ -6,7 +7,16 @@ from django.utils import timezone
 from www.parsers import kt
 from www.models import Article, Byline
 
-
+# Begin logging settings
+logger = logging.getLogger()
+handler = logging.StreamHandler()
+formatter = logging.Formatter(
+        '%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.setLevel(logging.DEBUG)
+# End logging settings
+        
 class Command(BaseCommand):
     help = """Scrape Khmer Times.
 
@@ -32,16 +42,19 @@ def load_article(url):
     try:
         parser = kt.KTParser
     except KeyError:
+    	logger.debug('No parser with that name')
         return
     parsed_article = parser(url)
     if not parsed_article.real_article:
+    	logger.debug('Not a real article')
         return
     return parsed_article
 
 def update_article_views():
     for article in Article.objects.all():
         if article.boring == True:
-            continue
+        	logger.debug('Boring')
+        	continue
         parsed_article = load_article(article.url)
         if parsed_article is None:
             continue
@@ -54,9 +67,10 @@ def update_article_views():
         else:
             a.title = parsed_article.title
             a.views = parsed_article.views
+            a.pub_date = parsed_article.pub_date
             for name in parsed_article.bylines:
                 byline = Byline.objects.get_or_create(name=name)
-                byline.articles.add(a)
+                byline[0].articles.add(a)
                 a.bylines.add(byline[0])
             a.save()
 
