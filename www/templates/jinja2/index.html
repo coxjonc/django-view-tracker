@@ -4,8 +4,10 @@
     <title>Three Digit</title>
 </head>
 <body>
+<h2>Data about Khmer Times pageviews, sorted by reporter. Scraped twice daily.</h2>
+<h2><a href="https://github.com/geezhawk/django-view-tracker">View source on GitHub.</a></h2>
 {% for k, v in bylines.items() %}
-    <h2>{{k}}</h2>
+    <h4>{{k}}</h4>
     <ul>
     {% for k2, v2 in v %}
         <li><strong>{{k2}}</strong> -- {{v2}}</li>
