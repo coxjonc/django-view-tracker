@@ -92,14 +92,19 @@ class KTParser(BaseParser):
             self.real_article = False
             return
         # If necessary, cut Khmer Times off front of byline
-        if clean[0].lower() == 'khmer':
-            try:
-                if clean[2].lower=='by':
-                    clean = clean[3:]
-                else:
-                    clean = clean[2:]
-            except IndexError:
-                self.real_article = False
+        try:
+            if clean[0].lower() == 'khmer':
+                try:
+                    if clean[2].lower=='by':
+                        clean = clean[3:]
+                    else:
+                        clean = clean[2:]
+                except IndexError:
+                    self.real_article = False
+                    return
+        except:
+            self.real_article = False
+            return
         # If multiple reporters, split byline into sublists on 'and'
         clean_split = [list(g) for k,g in itertools.groupby(clean,lambda x:x == 'and') if not k]
         # It's possible for a byline to contain both staff and non-staff writers
