@@ -39,6 +39,7 @@ class KTParser(BaseParser):
         'Chea Vannak',
         'Pav Suy',
         'Ros Chanveasna',
+        'Tin Sokhavuth',
         'Ven Rathavong',
         'Chea Takihiro',
         'Cheang Sokha',
@@ -78,8 +79,16 @@ class KTParser(BaseParser):
         date_span = soup.find('span', attrs={'id':'date'})
         ds = re.findall(r'[\w]+', date_span.get_text())
         date_dict = dict((v,k) for k, v in enumerate(calendar.month_abbr))
-        self.pub_date = datetime.datetime.strptime('{}-{}-{}'.format(ds[3], date_dict[ds[2][:3]], ds[1]),
-                                                           '%Y-%m-%d')
+        date_final = datetime.datetime.strptime('{}-{}-{}'.format(ds[3], 
+            date_dict[ds[2][:3]], 
+            ds[1]),
+            '%Y-%m-%d')
+        if date_final <= datetime.datetime(2016, 2, 15, 0, 0):
+            self.real_article = False
+            logger.debug('Article too old')
+            return
+        else:
+            self.pub_date = date_final
         # Get bylines
         try: 
             full_byline = soup.find('div', 
@@ -94,7 +103,7 @@ class KTParser(BaseParser):
         try:
             if clean[0].lower() == 'khmer':
                 try:
-                    if clean[2].lower=='by':
+                    if clean[2].lower()=='by':
                         clean = clean[3:]
                     else:
                         clean = clean[2:]

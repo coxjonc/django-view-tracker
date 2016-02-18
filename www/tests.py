@@ -5,10 +5,7 @@ from www.parsers import kt
 
 class ParserTestCase(TestCase):
     def test_parser(self):
-        url_list = [
-        'http://www.khmertimeskh.com/news/21337/le-cambodge-est-une---conomie-modeste-mais-en-rattrapage-extr--mement-rapide/'
-        'http://www.khmertimeskh.com/news/21313/dutchman-tries-to-fly-coop--tears-hole-in-cell---s-ceiling/'
-        ]
+        url = 'http://www.khmertimeskh.com/news/21549/minister-of-interior-addresses----gaps----in-democracy/'
         parsed_article = self.load_article(url)
         if parsed_article is not None:
             a = Article.objects.get_or_create(url=parsed_article.url)[0]
