@@ -23,7 +23,6 @@ logger.setLevel(logging.DEBUG)
 class KTParser(BaseParser):
     domains = ['www.khmertimeskh.com']
     feeder_pat = '^http://www.khmertimeskh.com/news/[2-9]\d{4}/[\w]'
-    #check if markup is ruined by FB popup
     feeder_pages = ['http://www.khmertimeskh.com']
     reporters = [
         'May Titthara',
