@@ -50,4 +50,5 @@ def update_article_views():
             for name in parsed_article.bylines:
                 byline = Byline.objects.get_or_create(name=name)
                 a.bylines.add(byline[0])
+                byline[0].update()
             a.save()

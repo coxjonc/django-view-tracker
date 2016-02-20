@@ -1,0 +1,12 @@
+{% load render_bundle from webpack_loader %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Three Digit</title>
+    {% render_bundle 'main' 'css' %} 
+</head>
+<body>
+    {% block content %}{% endblock %}
+    {% render_bundle 'main' 'js' %}
+</body>
+</html>

@@ -1,11 +1,10 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 
-urlpatterns = [
-    # Examples:
-    # url(r'^$', 'three_digit.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
+from www.urls import router
 
+urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^', include('www.urls'))
+    url(r'^api/', include(router.urls)),
+    url(r'^', include('www.urls')),
 ]

@@ -1,0 +1,38 @@
+{
+  "name": "three-digit",
+  "version": "0.0.1",
+  "description": "View tracking with Django",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "django",
+    "react",
+    "python",
+    "scraper",
+    "webpack",
+    "rest"
+  ],
+  "author": "Jonathan Cox",
+  "license": "ISC",
+  "devDependencies": {
+    "babel": "^6.3.26",
+    "babel-core": "^6.4.5",
+    "babel-loader": "^6.2.1",
+    "babel-preset-react": "^6.3.13",
+    "css-loader": "^0.23.1",
+    "expose-loader": "^0.7.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.8.5",
+    "jquery": "^2.2.0",
+    "jquery-loader": "^2.1.1",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "react-router": "^2.0.0",
+    "style-loader": "^0.13.0",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.12.12",
+    "webpack-bundle-tracker": "0.0.93"
+  }
+}

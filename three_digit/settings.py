@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     # third-party apps
     'django_extensions',
     'rest_framework',
+    'webpack_loader',
     # internal apps
     'www',
 )
@@ -57,11 +58,18 @@ ROOT_URLCONF = 'three_digit.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.jinja2.Jinja2',
-        'DIRS': [os.path.join(BASE_DIR, 'www/templates/jinja2')],
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
         'APP_DIRS': True,
-        'OPTIONS': {'environment': 'www.jinja2.Environment'}
-    },
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ]        
+        }
+    }
 ]
 
 WSGI_APPLICATION = 'three_digit.wsgi.application'
@@ -121,3 +129,11 @@ STATICFILES_DIRS = (
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+#Webpack settings
+WEBPACK_LOADER = {
+    'DEFAULT' : {
+        'BUNDLE_DIR_NAME': 'bundles/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+    }
+}
