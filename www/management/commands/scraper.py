@@ -18,6 +18,14 @@ class Command(BaseCommand):
     """
     def handle(self, *args, **options):
         update_article_views()
+        
+        for x in Byline.objects.all():
+            try: 
+                x.weekly_rank = Byline.objects.filter(weekly_views__gt=x.weekly_views).count() + 1
+                x.all_time_rank = Byline.objects.filter(all_views__gt=x.all_views).count() + 1
+                x.save()
+            except ValueError: 
+                pass
 
 def get_all_article_urls():
     ans = set()

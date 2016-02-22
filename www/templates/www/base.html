@@ -3,9 +3,16 @@
 <html>
 <head>
     <title>Three Digit</title>
-    {% render_bundle 'main' 'css' %} 
+    {% render_bundle 'main' 'css' %}
 </head>
 <body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand">KT View Stats</a>
+        </div>
+      </div>
+    </nav>
     {% block content %}{% endblock %}
     {% render_bundle 'main' 'js' %}
 </body>

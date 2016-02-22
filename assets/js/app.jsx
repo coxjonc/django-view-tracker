@@ -1,4 +1,6 @@
 var React = require('react')
+require('../css/bootstrap.min.css')
+var CardArticleTitle = require('./card-article-title')
 
 module.exports = React.createClass({
     loadBylinesFromServer: function() {
@@ -10,6 +12,7 @@ module.exports = React.createClass({
             }.bind(this)
         })
     },
+    
     getInitialState: function() {
         return {data: []};
     },
@@ -19,17 +22,25 @@ module.exports = React.createClass({
     },
     render: function(){
         if (this.state.data) {
-            console.log(this.state.data)
             var bylineNodes = this.state.data.map(function(byline){
-                return <li>{byline.name}</li>
+                return(
+                    <div className="row top-buffer">
+                    <div className="col-md-8">
+                            <h2>{byline.name} <button className="btn btn-primary">View author details</button> </h2>
+                        <ul className="list-group">
+                            <CardArticleTitle url={byline.most_viewed_all_time}/>
+                            <li className="list-group-item">All time views: {byline.all_views}</li>
+                            <li className="list-group-item">Rank: {byline.all_time_rank}</li>
+                        </ul>
+                    </div>
+                    </div>
+                )
             })
+            return (
+                <div className="bylineInfo">
+                    {bylineNodes}
+                </div>
+            )
         }
-        return (
-            <div>
-                <h1>Hello, React!</h1>
-                <ul>
-                {bylineNodes}
-                </ul>
-            </div>
-    )}
+    }
 })

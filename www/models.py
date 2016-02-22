@@ -11,9 +11,11 @@ class Byline(models.Model):
     most_viewed_weekly = models.ForeignKey('Article', null=True, related_name='weekly_most_viewed')
     all_views = models.IntegerField(null=True)
     weekly_views = models.IntegerField(null=True)
+    weekly_rank = models.IntegerField(null=True)
+    all_time_rank = models.IntegerField(null=True)
 
     class Meta: 
-        ordering = ['all_views']
+        ordering = ['-all_views']
 
     def __unicode__(self):
         return self.name
@@ -24,15 +26,20 @@ class Byline(models.Model):
         all_articles = self.articles.all()
         max_views = all_articles.aggregate(Max('views'))
         self.most_viewed_all_time = all_articles.filter(views=max_views['views__max'])[0]
-        self.all_views = sum([x.views for x in all_articles])
+        self.all_views = sum([x.views for x in all_articles if x.views])
 
         #calculate weekly statistics
         week_articles = self.articles.filter(pub_date__gte=timezone.now()-datetime.timedelta(days=7))
         max_views = week_articles.aggregate(Max('views'))
-        self.most_viewed_weekly = week_articles.filter(views=max_views['views__max'])[0]
-        self.weekly_views = sum([x.views for x in week_articles])
-        
+        try:
+            self.most_viewed_weekly = week_articles.filter(views=max_views['views__max'])[0]
+            self.weekly_views = sum([x.views for x in week_articles])
+        except IndexError:
+            pass
+
         super(Byline, self).save(*args, **kwargs)
+
+    
 
 class Article(models.Model): 
     bylines = models.ManyToManyField(Byline, related_name='articles')

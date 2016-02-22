@@ -34,6 +34,7 @@ class KTParser(BaseParser):
         'So Nyka',
         'Srey Kumneth',
         'Nou Sotheavy',
+        'May Kunmakara',
         'Sum Manet',
         'Va Sonyka',
         'Chea Vannak',
