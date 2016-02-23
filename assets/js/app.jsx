@@ -26,12 +26,12 @@ module.exports = React.createClass({
                 return(
                     <div className="row top-buffer">
                     <div className="col-md-8">
-                            <h2>{byline.name} <button className="btn btn-primary">View author details</button> </h2>
-                        <ul className="list-group">
-                            <CardArticleTitle url={byline.most_viewed_all_time}/>
-                            <li className="list-group-item">All time views: {byline.all_views}</li>
-                            <li className="list-group-item">Rank: {byline.all_time_rank}</li>
-                        </ul>
+                        <h2>{byline.name} <button className="btn btn-primary">View author details</button> </h2>
+                            <ul className="list-group">
+                                <CardArticleTitle url={byline.most_viewed_all_time}/>
+                                <li className="list-group-item">All time views: {byline.all_views}</li>
+                                <li className="list-group-item">Rank: {byline.all_time_rank}</li>
+                            </ul>
                     </div>
                     </div>
                 )
