@@ -22,7 +22,6 @@ module.exports = React.createClass({
     render: function() {
         return (
             <li className="list-group-item">
-            <p>Most viewed story:</p>
             <p><a href={this.state.data.url}>
                  {this.state.data.title} 
             </a> ({this.state.data.views})</p>

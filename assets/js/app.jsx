@@ -1,4 +1,5 @@
 var React = require('react')
+var Router = require('react-router')
 require('../css/bootstrap.min.css')
 var CardArticleTitle = require('./card-article-title')
 
@@ -23,10 +24,15 @@ module.exports = React.createClass({
     render: function(){
         if (this.state.data) {
             var bylineNodes = this.state.data.map(function(byline){
+                var pkLink = '/author/'.concat(byline.pk)
                 return(
                     <div className="row top-buffer">
                     <div className="col-md-8">
-                        <h2>{byline.name} <button className="btn btn-primary">View author details</button> </h2>
+                        <h2>{byline.name} 
+                            <Router.Link to={pkLink}>
+                                <button className="btn btn-primary btn-padded">All articles</button>
+                            </Router.Link> 
+                        </h2>
                             <ul className="list-group">
                                 <CardArticleTitle url={byline.most_viewed_all_time}/>
                                 <li className="list-group-item">All time views: {byline.all_views}</li>
