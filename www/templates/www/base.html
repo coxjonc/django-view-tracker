@@ -1,9 +1,9 @@
-{% load render_bundle from webpack_loader %}
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Three Digit</title>
-    {% render_bundle 'main' 'css' %}
+    {% static 'bundles/styles.css' %}
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -14,6 +14,6 @@
       </div>
     </nav>
     {% block content %}{% endblock %}
-    {% render_bundle 'main' 'js' %}
+    {% static 'bundles/main.js' %}
 </body>
 </html>
