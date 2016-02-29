@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Three Digit</title>
-    {% static 'bundles/styles.css' %}
+    <link rel="stylesheet" type="text/css" href="{% static 'bundles/styles.css' %}"/>
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -14,6 +14,6 @@
       </div>
     </nav>
     {% block content %}{% endblock %}
-    {% static 'bundles/main.js' %}
+    <script src="{% static 'bundles/main.js' %}"</script>
 </body>
 </html>
