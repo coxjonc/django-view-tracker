@@ -9,7 +9,7 @@ module.exports = {
 	entry: './assets/js/index',
 	
 	output: {
-		path: path.resolve('./assets/bundles/'),
+		path: './assets/bundles/',
 		filename: '[name].js',
 	},
 	
