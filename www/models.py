@@ -51,7 +51,7 @@ class Article(models.Model):
     pub_date = models.DateTimeField(null=True)
 
     class Meta:
-        ordering = ['-views']
+        ordering = ['-pub_date']
         get_latest_by = 'last_updated'
 
     def outdated(self, views):
