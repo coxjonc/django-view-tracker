@@ -1,5 +1,4 @@
 *.pyc
 staticfiles
 node_modules
-assets/bundles
 *.swp
